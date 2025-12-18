@@ -1,12 +1,30 @@
+import { useState } from "react";
+import { registerUser } from "../services/auth";
+import { useNavigate } from "react-router-dom";
 
-export default function Register(){
-return(<div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100vh'}}>
-<div>
-<h2>Register</h2>
-<input placeholder="Full Name"/><br/>
-<input placeholder="Username"/><br/>
-<input placeholder="Email"/><br/>
-<input type="password" placeholder="Password"/><br/>
-<button>Create Account</button>
-</div></div>)
+export default function Register() {
+  const nav = useNavigate();
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    username: "",
+    password: "",
+  });
+
+  const submit = async (e) => {
+    e.preventDefault();
+    await registerUser(form);
+    nav("/");
+  };
+
+  return (
+    <form onSubmit={submit}>
+      <input placeholder="Full Name" onChange={e=>setForm({...form,name:e.target.value})}/>
+      <input placeholder="Email" onChange={e=>setForm({...form,email:e.target.value})}/>
+      <input placeholder="Username" onChange={e=>setForm({...form,username:e.target.value})}/>
+      <input type="password" placeholder="Password" onChange={e=>setForm({...form,password:e.target.value})}/>
+      <button>Create Account</button>
+    </form>
+  );
 }
+
