@@ -1,5 +1,12 @@
 
 import api from "./api.js";
 
-export const login = (data) => api.post("/auth/login", data);
-export const register = (data) => api.post("/auth/register", data);
+export const login = async (data) => {
+  const res = await api.post("/auth/login", data);
+  localStorage.setItem("token", res.data.access_token || "");
+  return res;
+};
+
+export const register = async (data) => {
+  return api.post("/auth/register", data);
+};
