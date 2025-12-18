@@ -1,24 +1,15 @@
+
 import { useState } from "react";
-import { loginUser } from "../services/auth";
-import { useNavigate } from "react-router-dom";
+import { login } from "../services/auth";
 
-export default function Login() {
-  const nav = useNavigate();
-  const [form, setForm] = useState({ username: "", password: "" });
-
-  const submit = async (e) => {
-    e.preventDefault();
-    const res = await loginUser(form);
-    localStorage.setItem("token", res.data.access_token);
-    nav("/dashboard");
-  };
-
+export default function Login(){
+  const [form, setForm] = useState({username:"", password:""});
   return (
-    <form onSubmit={submit}>
-      <input placeholder="Username" onChange={e=>setForm({...form,username:e.target.value})}/>
-      <input type="password" placeholder="Password" onChange={e=>setForm({...form,password:e.target.value})}/>
-      <button>Login</button>
-    </form>
+    <div>
+      <h2>Login</h2>
+      <input placeholder="Username" onChange={e=>setForm({...form, username:e.target.value})}/>
+      <input type="password" placeholder="Password" onChange={e=>setForm({...form, password:e.target.value})}/>
+      <button onClick={()=>login(form).then(()=>alert("OK")).catch(()=>alert("Fail"))}>Login</button>
+    </div>
   );
 }
-
